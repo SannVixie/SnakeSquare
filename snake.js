@@ -2,7 +2,7 @@ var snakeX = 2;
 var snakeY = 2;
 var height = 42;
 var width = 42;
-var interval = 200;
+var interval = 250;
 var increment = 1;
 
 var tailX = [snakeX];
@@ -31,6 +31,7 @@ var poison;
 //game starts
 function run(){
 	init();
+	unitpine();
 	int = setInterval(gameLoop, interval);
 }
 
@@ -38,6 +39,10 @@ function init(){
 	createMap();
 	createSnake();
 	createApple();
+
+}
+
+function unitpine(){
 	createPine();
 	createStraw();
 	createWaterMelon();
@@ -97,6 +102,7 @@ function createApple(){
 		apX = appleX;
 		apY = appleY;
 }
+
 
 function createPine(){
 	var found = false;
@@ -158,16 +164,16 @@ function createPoison(){
 window.addEventListener("keypress", function key(){
 	var key = event.keyCode;
 	//if key is W set direction up
-	if(direction !=-1 && (key == 119 || key == 87 || key == 56))
+	if(direction !=-1 && (key == 119 || key == 87 || key == 56 || key == 38))
 		direction = 0;
 	//if key is S set direction down
-	else if(direction !=0 && (key == 115 || key == 83 || key == 53))
+	else if(direction !=0 && (key == 115 || key == 83 || key == 53 || key == 40))
 		direction = -1;
 	//if key is A set direction left
-	else if(direction != 2 && (key == 97 || key == 65 || key == 52))
+	else if(direction != 2 && (key == 97 || key == 65 || key == 52 || key == 37))
 		direction = 1;
 	//if key is D set direction right
-	else if(direction != 1 && (key == 100 || key == 68 || key == 54))
+	else if(direction != 1 && (key == 100 || key == 68 || key == 54 || key == 39))
 		direction = 2;
 	if(!running){
 		running = true;}
@@ -185,10 +191,15 @@ function gameLoop(){
 
 function update(){
 	set(apX, apY, "apple");
-	set(pX, pY, "pineapple");
-	set(sbX, sbY, "strawberry");
-	set(wmX, wmY, "watermelon");
-	set(poiX, poiY, "poison");
+
+	// if (score > 15) {
+
+		set(pX, pY, "pineapple");
+	// }
+
+	// set(sbX, sbY, "strawberry");
+	// set(wmX, wmY, "watermelon");
+	// set(poiX, poiY, "poison");
 	updateTail();
 	set(tailX[length], tailY[length], "blank");
 	if (direction == 0){
@@ -208,7 +219,8 @@ function update(){
 	}
 
 	if(snakeX == 0 || snakeX == width-1 || snakeY == 0 || snakeY == height-1){
-		gameOver = true;}
+		gameOver = true;
+	}
 	else if(snakeX == apX && snakeY == apY){
 		createApple();
 		length+=increment;
@@ -235,6 +247,8 @@ function update(){
 		gameOver = true
 		// score = 0;
 	}
+
+
 
 	var scoreEle = document.getElementById("score");
 	scoreEle.innerText = score;
